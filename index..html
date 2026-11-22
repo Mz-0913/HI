@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0E6B6B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>口腔健康 癌不靠近｜口腔癌衛教</title>
+<style>
+  :root{
+    --teal-dark:#0E6B6B; --teal:#128C8C; --teal-soft:#E6F4F4;
+    --orange:#E87A33; --red:#C0392B; --dark:#262B2B; --gray:#555F5F;
+    --bg:#F4F7F7; --card:#FFFFFF; --shadow:0 2px 10px rgba(14,107,107,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:"Microsoft JhengHei","微軟正黑體","PingFang TC",sans-serif;
+    background:var(--bg); color:var(--dark);
+    max-width:480px; margin:0 auto; padding-bottom:76px;
+  }
+  /* ===== 頂部標題 ===== */
+  header{
+    background:linear-gradient(135deg,var(--teal-dark),var(--teal));
+    color:#fff; padding:26px 20px 22px; border-radius:0 0 24px 24px;
+    box-shadow:var(--shadow);
+  }
+  header h1{font-size:24px;letter-spacing:1px}
+  header p{font-size:13px;opacity:.85;margin-top:6px}
+  .badge{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;
+    padding:4px 12px;font-size:12px;margin-top:10px}
+  /* ===== 頁面 ===== */
+  .page{display:none;padding:16px 16px 8px;animation:fade .25s ease}
+  .page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2.sec{font-size:18px;color:var(--teal-dark);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+  h2.sec::before{content:"";width:5px;height:20px;background:var(--orange);border-radius:3px}
+  .card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow);line-height:1.7;font-size:15px}
+  .card b.hl{color:var(--orange)}
+  .card b.rd{color:var(--red)}
+  .card ul{padding-left:20px}
+  .card li{margin-bottom:4px}
+  .stat{display:flex;gap:10px;margin-bottom:12px}
+  .stat .card{flex:1;text-align:center;padding:14px 8px}
+  .stat .num{font-size:22px;font-weight:bold;color:var(--red)}
+  .stat .lab{font-size:12px;color:var(--gray);margin-top:2px}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  th{background:var(--teal-dark);color:#fff;padding:10px 8px;font-weight:600}
+  td{padding:10px 8px;text-align:center;border-top:1px solid #EEF3F3}
+  td:first-child{text-align:left}
+  tr.warn td{color:var(--red);font-weight:bold;background:#FDF0E4}
+  .tip{background:#FDF0E4;border-left:4px solid var(--orange);padding:12px 14px;border-radius:0 12px 12px 0;font-size:14px;line-height:1.6;margin-bottom:12px}
+  /* ===== 自我檢查 ===== */
+  .chk{display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:12px;
+    padding:13px 14px;margin-bottom:9px;box-shadow:var(--shadow);font-size:15px;cursor:pointer;transition:.15s}
+  .chk input{width:20px;height:20px;margin-top:2px;accent-color:var(--teal);flex:none}
+  .chk:has(input:checked){background:var(--teal-soft);border:1px solid var(--teal)}
+  .btn{display:block;width:100%;border:none;background:var(--teal-dark);color:#fff;font-size:16px;
+    font-weight:bold;padding:14px;border-radius:12px;margin-top:14px;cursor:pointer;font-family:inherit}
+  .btn:active{transform:scale(.98)}
+  .btn.orange{background:var(--orange)}
+  .result{border-radius:12px;padding:14px;font-size:15px;line-height:1.6;margin-top:12px;display:none;font-weight:bold}
+  .result.bad{background:#FBE9E7;color:var(--red);display:block}
+  .result.good{background:var(--teal-soft);color:var(--teal-dark);display:block}
+  /* ===== 測驗 ===== */
+  .quiz{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .quiz .q{font-size:15px;font-weight:bold;line-height:1.6;margin-bottom:12px}
+  .quiz .q .tag{color:var(--orange);margin-right:6px}
+  .opt{display:block;width:100%;text-align:left;background:#F4F7F7;border:2px solid transparent;
+    border-radius:10px;padding:11px 14px;font-size:14px;margin-bottom:8px;cursor:pointer;font-family:inherit;transition:.15s;color:var(--dark)}
+  .opt.correct{background:#E3F4E8;border-color:#2E9E5B;color:#1D7A43;font-weight:bold}
+  .opt.wrong{background:#FBE9E7;border-color:var(--red);color:var(--red)}
+  .opt:disabled{cursor:default;opacity:.95}
+  .exp{font-size:13px;color:var(--gray);background:var(--teal-soft);border-radius:8px;padding:9px 12px;line-height:1.6;display:none}
+  .exp.show{display:block}
+  #score{text-align:center;padding:18px;border-radius:14px;background:#fff;box-shadow:var(--shadow);margin-bottom:14px;display:none}
+  #score .big{font-size:34px;font-weight:bold;color:var(--teal-dark)}
+  #score .msg{font-size:14px;color:var(--gray);margin-top:4px}
+  /* ===== 底部導覽 ===== */
+  nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+    background:#fff;display:flex;box-shadow:0 -2px 12px rgba(0,0,0,.08);z-index:9}
+  nav button{flex:1;border:none;background:none;padding:9px 0 10px;font-size:11px;color:var(--gray);
+    font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+  nav button .ic{font-size:20px}
+  nav button.on{color:var(--teal-dark);font-weight:bold}
+  nav button.on .ic{transform:scale(1.1)}
+  .foot{text-align:center;font-size:11px;color:var(--gray);padding:14px 0 4px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>口腔健康　癌不靠近</h1>
+  <p>口腔癌衛教 App</p>
+  <span class="badge">📱 適合手機瀏覽 · 可離線閱讀</span>
+</header>
+
+<!-- ============ 頁1：首頁/簡介 ============ -->
+<div class="page active" id="p-home">
+  <h2 class="sec">什麼是口腔癌？</h2>
+  <div class="card">
+    口腔癌是指發生於<b>口腔內的惡性腫瘤</b>，包含牙齦、嘴唇、舌下、舌頭、硬顎等部位，其中約有 <b class="hl">90%</b> 屬於鱗狀細胞癌，是<b>我國 30 至 64 歲男性</b>常見的癌症之一。
+  </div>
+  <div class="stat">
+    <div class="card"><div class="num">8,000</div><div class="lab">每年新罹患人數</div></div>
+    <div class="card"><div class="num">3,000</div><div class="lab">每年死亡人數</div></div>
+    <div class="card"><div class="num">10 年+</div><div class="lab">死亡年齡較其他癌早</div></div>
+  </div>
+  <div class="tip">⚠️ 嚼檳榔、吸菸是造成口腔癌的主因，罹病後<b>輕則毀容，重則奪命</b>。</div>
+
+  <h2 class="sec">危險因子</h2>
+  <table>
+    <tr><th>習慣</th><th>罹癌風險倍數</th></tr>
+    <tr><td>吸菸</td><td>18 倍</td></tr>
+    <tr><td>喝酒</td><td>10 倍</td></tr>
+    <tr><td>吸菸＋嚼檳榔</td><td>89 倍</td></tr>
+    <tr class="warn"><td>吸菸＋飲酒＋嚼檳榔</td><td>123 倍</td></tr>
+  </table>
+  <div class="tip" style="margin-top:12px">三種習慣疊加，罹患上呼吸道消化道癌風險更高達 <b>10.5 倍</b>！<br>
+  其他危險因子：過度陽光曝曬、蛀牙、不當假牙、不良口腔衛生、長期營養不良。</div>
+</div>
+
+<!-- ============ 頁2：症狀+自我檢查 ============ -->
+<div class="page" id="p-check">
+  <h2 class="sec">可能出現的症狀</h2>
+  <div class="card">
+    <ul>
+      <li>頸部淋巴結腫大、頸部僵硬</li>
+      <li>吞嚥及說話困難</li>
+      <li>口腔疼痛、出血</li>
+      <li>口腔黏膜出現白斑</li>
+    </ul>
+    <p style="margin-top:8px;font-size:13px;color:var(--gray)">腫瘤傷口之外觀、異味、滲液，也會造成負面的身體心像。</p>
+  </div>
+
+  <h2 class="sec">自我檢查十大警訊</h2>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:10px">勾選您目前出現的狀況（可多選）：</p>
+  <div id="chklist">
+    <label class="chk"><input type="checkbox"><span>口腔黏膜出現不明白斑或紅斑</span></label>
+    <label class="chk"><input type="checkbox"><span>口腔黏膜潰瘍，持續超過兩個星期</span></label>
+    <label class="chk"><input type="checkbox"><span>口腔內部有腫脹、硬塊</span></label>
+    <label class="chk"><input type="checkbox"><span>口腔莫名麻木感、疼痛、觸痛</span></label>
+    <label class="chk"><input type="checkbox"><span>口腔內不明原因出血及咳血</span></label>
+    <label class="chk"><input type="checkbox"><span>頸部出現腫塊</span></label>
+    <label class="chk"><input type="checkbox"><span>舌頭的活動受到限制</span></label>
+    <label class="chk"><input type="checkbox"><span>咀嚼或吞嚥時感到困難</span></label>
+    <label class="chk"><input type="checkbox"><span>張口幅度不如以往</span></label>
+    <label class="chk"><input type="checkbox"><span>牙齒咬合感覺改變</span></label>
+  </div>
+  <button class="btn" onclick="doCheck()">評估結果</button>
+  <div class="result" id="chkResult"></div>
+</div>
+
+<!-- ============ 頁3：治療+預防 ============ -->
+<div class="page" id="p-care">
+  <h2 class="sec">治療方式</h2>
+  <div class="card">
+    治療包括<b>外科手術、放射治療、化學治療</b>。嚴重程度依 <b class="hl">TNM 系統</b>分期：
+    <b>T</b> 腫瘤大小、<b>N</b> 淋巴結轉移、<b>M</b> 遠端轉移，共分零期至四期。
+  </div>
+  <div class="card">
+    <b style="color:var(--teal-dark)">🟢 較早期（零～二期）</b><br>以手術切除為主。
+  </div>
+  <div class="card">
+    <b style="color:var(--orange)">🟠 三～四期（較晚期）</b>
+    <ul style="margin-top:6px">
+      <li>腫瘤及頸部淋巴切除</li>
+      <li>合併顯微皮瓣移植手術</li>
+      <li>皮瓣生長良好後，輔以化療及放療</li>
+      <li>目的：降低腫瘤復發機率</li>
+    </ul>
+  </div>
+
+  <h2 class="sec">如何預防？</h2>
+  <div class="card">
+    <ul>
+      <li>🚭 <b>避免吸菸、嚼檳榔</b>，減少飲酒</li>
+      <li>⛅ 避免長期曝露在陽光底下</li>
+      <li>🌶 避免長期食用太熱或太辣的食物</li>
+      <li>🦷 正確刷牙，保持良好口腔衛生</li>
+      <li>🏥 <b class="hl">定期做口腔黏膜篩檢</b>，降低死亡率</li>
+    </ul>
+  </div>
+  <div class="tip">若有任何口腔異狀，請盡早就醫檢查。<b>早發現、早治療！</b></div>
+</div>
+
+<!-- ============ 頁4：測驗 ============ -->
+<div class="page" id="p-quiz">
+  <h2 class="sec">問答測驗（共五題）</h2>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:12px">點選答案後立即顯示對錯與解析。</p>
+  <div id="score"><div class="big" id="scoreNum"></div><div class="msg" id="scoreMsg"></div></div>
+  <div id="quizBox"></div>
+  <button class="btn orange" onclick="resetQuiz()">🔄 重新測驗</button>
+</div>
+
+<div class="foot">
+  資料來源：《口腔癌》衛教簡報（陳冠伶、李瑜娟、蔡明臻）<br>
+  林等，2022；傅、陳，2024；衛生福利部國民健康署<br>
+  本 App 僅供衛教參考，不能取代專業醫療診斷
+</div>
+
+<nav>
+  <button class="on" onclick="go('home',this)"><span class="ic">🏠</span>首頁</button>
+  <button onclick="go('check',this)"><span class="ic">🔍</span>自我檢查</button>
+  <button onclick="go('care',this)"><span class="ic">💊</span>治療預防</button>
+  <button onclick="go('quiz',this)"><span class="ic">📝</span>測驗</button>
+</nav>
+
+<script>
+function go(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  window.scrollTo(0,0);
+}
+/* ===== 自我檢查 ===== */
+function doCheck(){
+  const boxes=document.querySelectorAll('#chklist input');
+  let n=0; boxes.forEach(b=>{if(b.checked)n++});
+  const r=document.getElementById('chkResult');
+  r.className='result '+(n>0?'bad':'good');
+  r.innerHTML = n>0
+    ? '⚠️ 您勾選了 '+n+' 項警訊！<br>建議盡速至耳鼻喉科或口腔外科就醫，接受口腔黏膜檢查。'
+    : '✅ 目前未勾選任何警訊。<br>請維持良好口腔習慣，並定期接受口腔黏膜篩檢。';
+}
+/* ===== 測驗 ===== */
+const quiz=[
+ {q:'同時吸菸、飲酒及嚼檳榔者，罹患口腔癌的機率是無此習慣者的幾倍？',
+  o:['18 倍','89 倍','123 倍','10 倍'],a:2,
+  e:'同時吸菸＋飲酒＋嚼檳榔為 123 倍，罹患上呼吸道消化道癌風險更達 10.5 倍。'},
+ {q:'口腔黏膜潰瘍持續多久以上沒有癒合，就應該就醫檢查？',
+  o:['3 天','1 個星期','2 個星期','1 個月'],a:2,
+  e:'潰瘍持續超過兩個星期即為警訊，應盡速就醫。'},
+ {q:'下列何者「不是」口腔癌可能出現的症狀？',
+  o:['頸部淋巴結腫大','口腔黏膜白斑','吞嚥困難','視力模糊'],a:3,
+  e:'口腔癌症狀包括頸部淋巴結腫大、白斑、吞嚥說話困難、口腔疼痛出血等，與視力無關。'},
+ {q:'口腔癌依 TNM 系統分期，較早期（零至二期）的治療以何者為主？',
+  o:['手術切除','化學治療','放射治療','標靶治療'],a:0,
+  e:'零至二期以手術切除為主；三、四期合併顯微皮瓣移植手術，再輔以化療及放療。'},
+ {q:'下列何者是預防口腔癌的正確做法？',
+  o:['定期做口腔黏膜篩檢','多曬太陽','常吃太燙的食物','不需要特別刷牙'],a:0,
+  e:'預防方法：拒菸拒檳、減少飲酒、避免日曬、避免燙辣食物、正確刷牙、定期口腔黏膜篩檢。'}
+];
+let answered,correct;
+function buildQuiz(){
+  answered=0;correct=0;
+  document.getElementById('score').style.display='none';
+  const box=document.getElementById('quizBox'); box.innerHTML='';
+  quiz.forEach((item,qi)=>{
+    const d=document.createElement('div'); d.className='quiz';
+    d.innerHTML='<div class="q"><span class="tag">Q'+(qi+1)+'</span>'+item.q+'</div>';
+    item.o.forEach((t,oi)=>{
+      const b=document.createElement('button'); b.className='opt'; b.textContent=t;
+      b.onclick=()=>{
+        answered++;
+        const opts=d.querySelectorAll('.opt');
+        opts.forEach((o,i)=>{o.disabled=true; if(i===item.a)o.classList.add('correct')});
+        if(oi===item.a){correct++;} else {b.classList.add('wrong');}
+        d.querySelector('.exp').classList.add('show');
+        if(answered===quiz.length)showScore();
+      };
+      d.appendChild(b);
+    });
+    const ex=document.createElement('div'); ex.className='exp'; ex.textContent='💡 '+item.e;
+    d.appendChild(ex); box.appendChild(d);
+  });
+}
+function showScore(){
+  const s=document.getElementById('score');
+  document.getElementById('scoreNum').textContent=correct+' / '+quiz.length+' 正確';
+  document.getElementById('scoreMsg').textContent=
+    correct===5?'太棒了！您已完整掌握口腔癌衛教重點 🎉':
+    correct>=3?'不錯喔！再複習一下答錯的題目吧 💪':'別氣餒，回到各頁面再讀一次內容吧 📖';
+  s.style.display='block';
+  s.scrollIntoView({behavior:'smooth'});
+}
+function resetQuiz(){buildQuiz();window.scrollTo(0,0);}
+buildQuiz();
+</script>
+</body>
+</html>
